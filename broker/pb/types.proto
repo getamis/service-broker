@@ -1,0 +1,97 @@
+// Copyright 2017 AMIS Technologies
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package pb;
+
+import "struct.proto";
+
+message Catalog {
+	repeated Service services = 1;
+}
+
+message Service {
+	string name = 1;
+	string id = 2;
+	string description = 3;
+	bool bindable = 4;
+	bool plan_updateable = 5;
+	repeated string tags = 6;
+	repeated string requires = 7;
+	google.protobuf.Struct metadata = 8;
+	repeated Plan plans = 9;
+	google.protobuf.Struct dashboard_client = 10;
+}
+
+message Plan {
+	string name = 1;
+	string id = 2;
+	string description = 3;
+	google.protobuf.Struct metadata = 4;
+	bool free = 5;
+}
+
+message Instance {
+	string id = 1;
+	string dashboard_url = 2;
+	string internal_id = 3;
+	string service_id = 4;
+	string plan_id = 5;
+	string organization_guid = 6;
+	string space_guid = 7;
+	LastOperation last_operation = 8;
+	google.protobuf.Struct parameters = 9;
+}
+
+message Binding {
+	string id = 1;
+	string service_id = 2;
+	string app_id = 3;
+	string service_plan_id = 4;
+	string private_key = 5;
+	string service_instance_id = 6;
+}
+
+message ServiceBindingRequest {
+	string service_id = 1;
+	string binding_id = 2;
+}
+
+message ServiceBindingResponse {
+	google.protobuf.Struct credentials = 1; 
+}
+
+message ServiceInstanceRequest {
+	string service_id = 1;
+}
+
+message ServiceInstanceResponse {
+	string dashboard_url = 1;
+	LastOperation last_operation = 2;
+}
+
+message Credential {
+	string public_ip = 1;
+	string username = 2;
+	string private_key = 3;
+}
+
+message LastOperation {
+	string state = 1;
+	string description = 2;
+	int32 async_poll_interval_seconds = 3;
+}
+
+message Empty {}
