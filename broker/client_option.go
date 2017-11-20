@@ -12,11 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package log
+package broker
 
-type Logger interface {
-	Info(format string, args ...interface{})
-	Debug(format string, args ...interface{})
-	Warn(format string, args ...interface{})
-	Error(format string, args ...interface{})
+import (
+	"github.com/getamis/service-broker/log"
+)
+
+type clientOption struct {
+	logger log.Logger
+}
+
+type ClientOption func(*clientOption) *clientOption
+
+func Logger(logger log.Logger) ClientOption {
+	return func(o *clientOption) *clientOption {
+		o.logger = logger
+		return o
+	}
 }

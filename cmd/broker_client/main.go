@@ -20,9 +20,8 @@ import (
 	"fmt"
 
 	flag "github.com/spf13/pflag"
-	"google.golang.org/grpc"
 
-	"github.com/getamis/service-broker/broker/pb"
+	"github.com/getamis/service-broker/broker"
 )
 
 var (
@@ -34,16 +33,13 @@ func init() {
 }
 
 func main() {
-	conn, err := grpc.Dial(fmt.Sprintf(":%d", port), grpc.WithInsecure())
+	client, err := broker.NewClient(fmt.Sprintf(":%d", port))
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("Failed to create client, %v\n", err)
 		return
 	}
-	defer conn.Close()
 
-	client := pb.NewBrokerClient(conn)
-
-	catalog, err := client.GetCatalog(context.TODO(), &pb.Empty{})
+	catalog, err := client.GetCatalog(context.TODO())
 	if err != nil {
 		fmt.Printf("Failed to get catalog, %v\n", err)
 		return
