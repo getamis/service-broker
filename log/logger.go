@@ -20,12 +20,3 @@ type Logger interface {
 	Warn(format string, args ...interface{})
 	Error(format string, args ...interface{})
 }
-
-type FormattedLogger interface {
-	Logger
-
-	Infoln(args ...interface{})
-	Debugln(args ...interface{})
-	Warnln(args ...interface{})
-	Errorln(args ...interface{})
-}
